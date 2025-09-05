@@ -11,7 +11,7 @@ import re
 
 def scrape_farmadon_full():
     # Lista de productos a buscar (incluyendo diclofenac potásico)
-    PRODUCTOS = ["Paracetamol", "Ibuprofeno", "Loratadina", "diclofenac potasico"]
+    PRODUCTOS = ["Paracetamol", "Ibuprofeno", "Loratadina", "Diclofenac Potasico"]
     
     # Configurar opciones de Chrome
     chrome_options = Options()
