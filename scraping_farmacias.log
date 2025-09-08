@@ -1,0 +1,156 @@
+2025-09-05 16:02:12,365 - INFO - Iniciando proceso de scraping
+2025-09-05 16:02:12,365 - INFO - ====== WebDriver manager ======
+2025-09-05 16:02:13,086 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:02:13,205 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:02:13,315 - INFO - Driver [C:\Users\sisa4\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-05 16:02:14,321 - INFO - Scrapeando farmatodo para producto: diclofenac
+2025-09-05 16:02:52,479 - WARNING - Error limpiando precio 'Bs.1.060.97': could not convert string to float: '1.060.97'
+2025-09-05 16:02:52,481 - WARNING - Error limpiando precio 'Bs.1.060.97': could not convert string to float: '1.060.97'
+2025-09-05 16:02:52,482 - WARNING - Error limpiando precio 'Bs.1.285.37': could not convert string to float: '1.285.37'
+2025-09-05 16:02:52,482 - WARNING - Error limpiando precio 'Bs.1.285.37': could not convert string to float: '1.285.37'
+2025-09-05 16:02:52,484 - WARNING - Error limpiando precio 'Bs.1.488.82': could not convert string to float: '1.488.82'
+2025-09-05 16:02:52,484 - WARNING - Error limpiando precio 'Bs.1.488.82': could not convert string to float: '1.488.82'
+2025-09-05 16:02:52,485 - WARNING - Error limpiando precio 'Bs.1.240.75': could not convert string to float: '1.240.75'
+2025-09-05 16:02:52,485 - WARNING - Error limpiando precio 'Bs.1.240.75': could not convert string to float: '1.240.75'
+2025-09-05 16:02:54,608 - INFO - [FARMATODO] diclofenac: 24 productos
+2025-09-05 16:02:54,608 - INFO - ====== WebDriver manager ======
+2025-09-05 16:02:55,261 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:02:55,372 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:02:55,481 - INFO - Driver [C:\Users\sisa4\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-05 16:02:56,486 - INFO - Scrapeando farmago para producto: diclofenac
+2025-09-05 16:03:00,331 - INFO - [FARMAGO] diclofenac: 39 productos
+2025-09-05 16:03:00,331 - INFO - ====== WebDriver manager ======
+2025-09-05 16:03:00,996 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:03:01,106 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:03:01,229 - INFO - Driver [C:\Users\sisa4\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-05 16:03:02,220 - INFO - Scrapeando farmaaas para producto: diclofenac
+2025-09-05 16:03:08,252 - WARNING - Error limpiando precio 'Bs. 351,Bs. 456,48': could not convert string to float: '351,456,48'
+2025-09-05 16:03:08,253 - WARNING - Error limpiando precio 'Bs. 218,Bs. 237,45': could not convert string to float: '218,237,45'
+2025-09-05 16:03:08,254 - WARNING - Error limpiando precio 'Bs. 99,Bs. 221,87': could not convert string to float: '99,221,87'
+2025-09-05 16:03:08,255 - WARNING - Error limpiando precio 'Bs. 71,Bs. 83,67': could not convert string to float: '71,83,67'
+2025-09-05 16:03:08,255 - WARNING - Error limpiando precio 'Bs. 713,Bs. 838,89': could not convert string to float: '713,838,89'
+2025-09-05 16:03:08,255 - WARNING - Error limpiando precio 'Bs. 178,Bs. 250,76': could not convert string to float: '178,250,76'
+2025-09-05 16:03:08,256 - WARNING - Error limpiando precio 'Bs. 150,Bs. 197,97': could not convert string to float: '150,197,97'
+2025-09-05 16:03:08,256 - WARNING - Error limpiando precio 'Bs. 226,Bs. 251,96': could not convert string to float: '226,251,96'
+2025-09-05 16:03:08,256 - WARNING - Error limpiando precio 'Bs. 456,Bs. 760,12': could not convert string to float: '456,760,12'
+2025-09-05 16:03:10,362 - INFO - [FARMAAAS] diclofenac: 20 productos
+2025-09-05 16:03:20,363 - INFO - ====== WebDriver manager ======
+2025-09-05 16:03:21,009 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:03:21,142 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:03:21,263 - INFO - Driver [C:\Users\sisa4\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-05 16:03:22,271 - INFO - Scrapeando farmatodo para producto: paracetamol
+2025-09-05 16:03:57,794 - WARNING - Error limpiando precio 'Bs.1.028.32': could not convert string to float: '1.028.32'
+2025-09-05 16:03:57,794 - WARNING - Error limpiando precio 'Bs.1.028.32': could not convert string to float: '1.028.32'
+2025-09-05 16:03:57,795 - WARNING - Error limpiando precio 'Bs.1.103.72': could not convert string to float: '1.103.72'
+2025-09-05 16:03:57,795 - WARNING - Error limpiando precio 'Bs.1.103.72': could not convert string to float: '1.103.72'
+2025-09-05 16:03:59,924 - INFO - [FARMATODO] paracetamol: 24 productos
+2025-09-05 16:03:59,924 - INFO - ====== WebDriver manager ======
+2025-09-05 16:04:00,558 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:04:00,669 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:04:00,781 - INFO - Driver [C:\Users\sisa4\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-05 16:04:01,836 - INFO - Scrapeando farmago para producto: paracetamol
+2025-09-05 16:04:04,741 - INFO - [FARMAGO] paracetamol: 1 productos
+2025-09-05 16:04:04,741 - INFO - ====== WebDriver manager ======
+2025-09-05 16:04:05,372 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:04:05,483 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:04:05,591 - INFO - Driver [C:\Users\sisa4\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-05 16:04:06,578 - INFO - Scrapeando farmaaas para producto: paracetamol
+2025-09-05 16:04:12,571 - WARNING - Error limpiando precio 'Bs. 517,Bs. 848,49': could not convert string to float: '517,848,49'
+2025-09-05 16:04:14,656 - INFO - [FARMAAAS] paracetamol: 16 productos
+2025-09-05 16:04:24,657 - INFO - ====== WebDriver manager ======
+2025-09-05 16:04:25,293 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:04:25,404 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:04:25,517 - INFO - Driver [C:\Users\sisa4\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-05 16:04:26,525 - INFO - Scrapeando farmatodo para producto: ibuprofeno
+2025-09-05 16:04:40,861 - WARNING - Error limpiando precio 'Bs.1.513.51': could not convert string to float: '1.513.51'
+2025-09-05 16:04:40,862 - WARNING - Error limpiando precio 'Bs.1.513.51': could not convert string to float: '1.513.51'
+2025-09-05 16:04:40,864 - WARNING - Error limpiando precio 'Bs.1.033.68': could not convert string to float: '1.033.68'
+2025-09-05 16:04:40,864 - WARNING - Error limpiando precio 'Bs.1.033.68': could not convert string to float: '1.033.68'
+2025-09-05 16:04:42,988 - INFO - [FARMATODO] ibuprofeno: 24 productos
+2025-09-05 16:04:42,988 - INFO - ====== WebDriver manager ======
+2025-09-05 16:04:43,623 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:04:43,745 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:04:43,856 - INFO - Driver [C:\Users\sisa4\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-05 16:04:44,856 - INFO - Scrapeando farmago para producto: ibuprofeno
+2025-09-05 16:04:47,936 - INFO - [FARMAGO] ibuprofeno: 38 productos
+2025-09-05 16:04:47,936 - INFO - ====== WebDriver manager ======
+2025-09-05 16:04:48,592 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:04:48,716 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:04:48,828 - INFO - Driver [C:\Users\sisa4\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-05 16:04:49,817 - INFO - Scrapeando farmaaas para producto: ibuprofeno
+2025-09-05 16:04:55,927 - WARNING - Error limpiando precio 'Bs. 602,Bs. 661,63': could not convert string to float: '602,661,63'
+2025-09-05 16:04:55,928 - WARNING - Error limpiando precio 'Bs. 452,Bs. 753,75': could not convert string to float: '452,753,75'
+2025-09-05 16:04:55,929 - WARNING - Error limpiando precio 'Bs. 904,Bs. 982,7': could not convert string to float: '904,982,7'
+2025-09-05 16:04:55,929 - WARNING - Error limpiando precio 'Bs. 1.773,Bs. 1.927,28': could not convert string to float: '1.773,1.927,28'
+2025-09-05 16:04:55,929 - WARNING - Error limpiando precio 'Bs. 727,Bs. 876,19': could not convert string to float: '727,876,19'
+2025-09-05 16:04:55,930 - WARNING - Error limpiando precio 'Bs. 1.178,Bs. 1.419,95': could not convert string to float: '1.178,1.419,95'
+2025-09-05 16:04:55,931 - WARNING - Error limpiando precio 'Bs. 535,Bs. 629,95': could not convert string to float: '535,629,95'
+2025-09-05 16:04:58,033 - INFO - [FARMAAAS] ibuprofeno: 20 productos
+2025-09-05 16:05:08,034 - INFO - ====== WebDriver manager ======
+2025-09-05 16:05:08,668 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:05:08,781 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:05:08,890 - INFO - Driver [C:\Users\sisa4\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-05 16:05:09,913 - INFO - Scrapeando farmatodo para producto: loratadina
+2025-09-05 16:05:22,842 - WARNING - Error limpiando precio 'Bs.1.900.98': could not convert string to float: '1.900.98'
+2025-09-05 16:05:22,843 - WARNING - Error limpiando precio 'Bs.1.900.98': could not convert string to float: '1.900.98'
+2025-09-05 16:05:22,845 - WARNING - Error limpiando precio 'Bs.1.006.27': could not convert string to float: '1.006.27'
+2025-09-05 16:05:22,845 - WARNING - Error limpiando precio 'Bs.1.006.27': could not convert string to float: '1.006.27'
+2025-09-05 16:05:22,846 - WARNING - Error limpiando precio 'Bs.1.184.94': could not convert string to float: '1.184.94'
+2025-09-05 16:05:22,846 - WARNING - Error limpiando precio 'Bs.1.184.94': could not convert string to float: '1.184.94'
+2025-09-05 16:05:22,846 - WARNING - Error limpiando precio 'Bs.1.240.75': could not convert string to float: '1.240.75'
+2025-09-05 16:05:22,846 - WARNING - Error limpiando precio 'Bs.1.240.75': could not convert string to float: '1.240.75'
+2025-09-05 16:05:24,955 - INFO - [FARMATODO] loratadina: 24 productos
+2025-09-05 16:05:24,955 - INFO - ====== WebDriver manager ======
+2025-09-05 16:05:25,584 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:05:25,696 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:05:25,806 - INFO - Driver [C:\Users\sisa4\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-05 16:05:26,788 - INFO - Scrapeando farmago para producto: loratadina
+2025-09-05 16:05:30,028 - INFO - [FARMAGO] loratadina: 39 productos
+2025-09-05 16:05:30,028 - INFO - ====== WebDriver manager ======
+2025-09-05 16:05:30,669 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:05:30,778 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-05 16:05:30,889 - INFO - Driver [C:\Users\sisa4\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-05 16:05:31,877 - INFO - Scrapeando farmaaas para producto: loratadina
+2025-09-05 16:05:37,874 - WARNING - Error limpiando precio 'Bs. 611,Bs. 1.001,98': could not convert string to float: '611,1.001,98'
+2025-09-05 16:05:37,876 - WARNING - Error limpiando precio 'Bs. 228,Bs. 281,53': could not convert string to float: '228,281,53'
+2025-09-05 16:05:37,876 - WARNING - Error limpiando precio 'Bs. 775,Bs. 842,83': could not convert string to float: '775,842,83'
+2025-09-05 16:05:37,877 - WARNING - Error limpiando precio 'Bs. 928,Bs. 1.427,75': could not convert string to float: '928,1.427,75'
+2025-09-05 16:05:39,968 - INFO - [FARMAAAS] loratadina: 20 productos
+2025-09-05 16:05:49,969 - INFO - Creando DataFrame...
+2025-09-05 16:05:49,971 - INFO - DataFrame creado: 289 filas
+2025-09-05 16:05:49,971 - INFO - Agrupando productos similares...
+2025-09-05 16:05:50,014 - INFO - Productos agrupados: 276 productos únicos identificados
+2025-09-05 16:05:50,213 - INFO - Datos con IDs de producto guardados en: C:\Users\sisa4\Desktop\consolidado_farmacias.xlsx
+2025-09-05 16:05:50,250 - INFO - Catálogo de productos guardado en: C:\Users\sisa4\Desktop\catalogo_productos_mejorado.xlsx
+2025-09-05 16:05:50,250 - INFO - Ejemplos de agrupación:
+2025-09-05 16:05:50,251 - INFO - 
+Producto ID: PROD_000001
+2025-09-05 16:05:50,251 - INFO - Nombre: Diclofenac Sódico 1% Difenac Dollder Gel X 30 Gr
+2025-09-05 16:05:50,252 - INFO - Farmacias: farmatodo
+2025-09-05 16:05:50,252 - INFO - Variaciones: 1
+2025-09-05 16:05:50,252 - INFO -   - farmatodo: Diclofenac Sódico 1% Difenac Dollder Gel X 30 Gr
+2025-09-05 16:05:50,252 - INFO - 
+Producto ID: PROD_000002
+2025-09-05 16:05:50,253 - INFO - Nombre: DIANALPER GEL (DICLOFENAC) 1.16% X 30GR
+2025-09-05 16:05:50,253 - INFO - Farmacias: farmago
+2025-09-05 16:05:50,253 - INFO - Variaciones: 1
+2025-09-05 16:05:50,253 - INFO -   - farmago: DIANALPER GEL (DICLOFENAC) 1.16% X 30GR
+2025-09-05 16:05:50,253 - INFO - 
+Producto ID: PROD_000003
+2025-09-05 16:05:50,254 - INFO - Nombre: Diclofenac Dietilamonio 1.16% Diklason Leti Gel X 50 Gr
+2025-09-05 16:05:50,254 - INFO - Farmacias: farmatodo
+2025-09-05 16:05:50,254 - INFO - Variaciones: 1
+2025-09-05 16:05:50,254 - INFO -   - farmatodo: Diclofenac Dietilamonio 1.16% Diklason Leti Gel X 50 Gr
+2025-09-05 16:05:50,254 - INFO - 
+Producto ID: PROD_000004
+2025-09-05 16:05:50,255 - INFO - Nombre: Diclofenac Dietilamino 1,16% Dencofen Laboratorios Ponce X 40 Gr
+2025-09-05 16:05:50,255 - INFO - Farmacias: farmatodo
+2025-09-05 16:05:50,255 - INFO - Variaciones: 1
+2025-09-05 16:05:50,255 - INFO -   - farmatodo: Diclofenac Dietilamino 1,16% Dencofen Laboratorios Ponce X 40 Gr
+2025-09-05 16:05:50,255 - INFO - 
+Producto ID: PROD_000005
+2025-09-05 16:05:50,256 - INFO - Nombre: DICLOFENAC SOD SUP 100MG X10 ALESS
+2025-09-05 16:05:50,256 - INFO - Farmacias: farmaaas
+2025-09-05 16:05:50,256 - INFO - Variaciones: 1
+2025-09-05 16:05:50,256 - INFO -   - farmaaas: DICLOFENAC SOD SUP 100MG X10 ALESS
+2025-09-05 16:05:50,256 - INFO - Proceso completado
