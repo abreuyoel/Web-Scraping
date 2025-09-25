@@ -109,28 +109,37 @@ def extraer_claves(nombre):
 
 def extraer_marca_desde_nombre(nombre):
     nombre = nombre.lower()
-    
-    # Lista expandida de marcas conocidas
-    marcas_extendidas = MARCAS_CONOCIDAS + [
-        "leti", "aless", "calox", "raven", "drotaf", "elm", "ccm", 
-        "dlr", "clx", "sigvaris", "audace", "media"
-    ]
-    
-    for marca in marcas_extendidas:
-        if marca in nombre:
+
+    # Si termina en "PHARME", es Pharmetique Labs
+    if nombre.endswith("pharme"):
+        return "Pharmetique Labs"
+
+    # Si termina en "H&M MEDICAL", lo extraemos
+    if "h&m medical" in nombre:
+        return "H&M Medical"
+
+    # Búsqueda normal en MARCAS_CONOCIDAS
+    for marca in MARCAS_CONOCIDAS:
+        if marca.lower() in nombre:
             return marca.upper()
-    
-    # Intentar extraer marca como última palabra o siglas
+
+    # Intentar extraer última palabra como marca
     palabras = nombre.split()
     if len(palabras) > 1:
-        # Última palabra podría ser la marca
-        ultima_palabra = palabras[-1]
-        if len(ultima_palabra) <= 6 and ultima_palabra.isalpha():
-            return ultima_palabra.upper()
-    
+        ultima = palabras[-1]
+        if len(ultima) <= 6 and ultima.isalpha():
+            return ultima.upper()
+
     return None
 
-
+def limpiar_nombre(nombre):
+    # Separar principios activos pegados
+    nombre = re.sub(r'(DICLOFENAC|SODICO|POTASICO|IBUPROFENO|LORATADINA|PARACETAMOL)(\d+)', r'\1 \2', nombre)
+    nombre = re.sub(r'(DICLOFENAC)(SODICO|POTASICO)', r'\1 \2', nombre)
+    nombre = re.sub(r'(LORATADINA)(\d+)', r'\1 \2', nombre)
+    nombre = re.sub(r'(IBUPROFENO)(\d+)', r'\1 \2', nombre)
+    nombre = re.sub(r'(PARACETAMOL)(\d+)', r'\1 \2', nombre)
+    return nombre
 
 # ---------------  SCRAPPERS  ---------------
 #############################################################################################
@@ -298,54 +307,16 @@ def extraer_nombre_comercial(nombre):
 #############################################################################################
 def extraer_precio_farmasas(card):
     try:
-        # Método 1: Buscar el contenedor de precio completo
-        contenedor_precio = card.select_one('div.contenedor-precio')
-        if contenedor_precio:
-            # Buscar todos los elementos de precio
-            elementos_precio = contenedor_precio.find_all(['span', 'div'], class_=True)
-            texto_precio = ' '.join([elem.get_text(strip=True) for elem in elementos_precio])
-            
-            # Buscar patrones de precio con expresiones regulares
-            patrones = [
-                r'Bs\.\s*(\d+\.?\d*,\d+)',  # Bs. 123,45
-                r'Bs\.\s*(\d+\.?\d*)',       # Bs. 123
-                r'(\d+\.?\d*,\d+)\s*Bs',     # 123,45 Bs
-                r'(\d+\.?\d*)\s*Bs',         # 123 Bs
-            ]
-            
-            for patron in patrones:
-                match = re.search(patron, texto_precio)
-                if match:
-                    precio = match.group(1).replace('.', '').replace(',', '.')
-                    return f"Bs. {precio}"
-        
-        # Método 2: Buscar elementos específicos de precio
-        precio_entero = card.select_one("span.precio")
-        precio_frac = card.select_one("span.fraccion")
-        
-        if precio_entero and precio_frac:
-            entero = precio_entero.get_text(strip=True)
-            fraccion = precio_frac.get_text(strip=True)
-            
-            # Limpiar la fracción (puede contener ",", "." o ser solo números)
-            if fraccion.startswith(','):
-                fraccion = fraccion[1:]
-            fraccion = fraccion.replace('.', '')
-            
-            return f"Bs. {entero}.{fraccion}"
-        elif precio_entero:
-            return f"Bs. {precio_entero.get_text(strip=True)}"
-        
-        # Método 3: Buscar en todo el texto de la tarjeta
-        texto_completo = card.get_text()
-        match = re.search(r'Bs\.\s*(\d+[.,]?\d*)', texto_completo)
-        if match:
-            precio = match.group(1).replace(',', '.')
-            return f"Bs. {precio}"
-            
+        entero = card.select_one("span.mat-card-title")
+        fraccion = card.select_one("span.mat-small")
+        if entero and fraccion:
+            entero_text = entero.get_text(strip=True).replace("Bs.", "").strip()
+            fraccion_text = fraccion.get_text(strip=True).replace(",", ".")
+            return f"Bs. {entero_text}.{fraccion_text}"
+        elif entero:
+            return f"Bs. {entero.get_text(strip=True).replace('Bs.', '').strip()}"
     except Exception as e:
         print(f"Error extrayendo precio: {e}")
-    
     return None
 
 # ---------------  NUEVA FUNCIÓN PARA EXTRAER FABRICANTE  ---------------
