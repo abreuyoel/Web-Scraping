@@ -12,8 +12,8 @@ import pandas as pd
 import time, os, traceback, re
 from datetime import datetime
 from collections import defaultdict, Counter
-# ---------------  CONFIG  ---------------
-RUTA_EXCEL   = r"C:\Users\sisa4\Desktop\consolidado_farmacias.xlsx"
+# ---------------  CONFIG  -------------
+RUTA_EXCEL   = r"C:\Users\pcdel\OneDrive\Desktop\consolidado_farmacias.xlsx"
 HEADLESS     = True
 PRODUCTOS    = ["Diclofenac", "Paracetamol", "Ibuprofeno", "Loratadina"]
 PROXY        = None  # Cambiar aquí si usas proxy
@@ -30,13 +30,13 @@ PRINCIPIOS_ACTIVOS = [
 ]
 
 MARCAS_CONOCIDAS = [
-    "mk", "genfar", "gsk", "panadol", "bago", "roemmers", "clofen",  "raven", "drotaf", "elm", "ccm", "dlr", "clx", "sigvaris",
+    "mk", "genfar", "gsk", "panadol", "bago", "roemmers",  "raven", "drotaf", "elm", "ccm", "dlr", "clx", "sigvaris",
     "Oftalmi", "Genven", "Leti", "Calox", "Elmor", "Ponce y Benzo", "Pfizer", "CCM Farma", "Aless", "La Santé", "Dollder", "Meyer",
     "Adium", "Bioglass", "Bioquimica", "Biosano", "Valmorca", "Laboratorios Farma", "COFASA", "Siegfried", "FC Pharma", 
     "Laboratorios Vargas", "Biotech", "DAC 55", "Pharmetique Labs", "PlusAndex", "Buka", "Kimiceg", "Farmacias Unidas",
     "Biotechnologia GKV", "DistriLab", "Neo", "Quim-Far", "MediGen", "MedVal", "MegaLabs", "MVGA", "Ravel", "Remeny", "Scott Edil",
     "Drogueria Clínica", "Vitalis", "Vivax", "GeoLab", "DoroPharma", "GVS Pharma", "IPS", "KMPlus", "Laproff", "INVERSIONES GEAGAR 2021",
-    "Farmacenter 24 La Lago"
+    "Farmacenter 24 La Lago", "H&M Medical"
 ]
 
 # ---------------  MEJORA EN LA FUNCIÓN LIMPIAR_PRECIO  ---------------
@@ -121,6 +121,27 @@ def extraer_marca_desde_nombre(nombre):
     # Búsqueda normal en MARCAS_CONOCIDAS
     for marca in MARCAS_CONOCIDAS:
         if marca.lower() in nombre:
+            return marca  # ← ESTA LÍNEA FALTABA
+
+    # Mapeo de correcciones específicas
+    correcciones = {
+        "biosa": "Biosano",
+        # Agrega más correcciones aquí si es necesario
+    }
+    
+    # Primero verificar correcciones específicas
+    for key, value in correcciones.items():
+        if key in nombre:
+            return value
+    
+    # Lista expandida de marcas conocidas
+    marcas_extendidas = MARCAS_CONOCIDAS + [
+        "leti", "aless", "calox", "raven", "drotaf", "elm", "ccm", 
+        "dlr", "clx", "sigvaris", "audace", "media", "biosano", "biotech"
+    ]
+    
+    for marca in marcas_extendidas:
+        if marca in nombre:
             return marca.upper()
 
     # Intentar extraer última palabra como marca
@@ -141,11 +162,6 @@ def limpiar_nombre(nombre):
     nombre = re.sub(r'(PARACETAMOL)(\d+)', r'\1 \2', nombre)
     return nombre
 
-# ---------------  SCRAPPERS  ---------------
-#############################################################################################
-###################################### FARMACIAS FARMATODO  #################################
-#############################################################################################
-
 def scrap_farmatodo(producto):
     url = f"https://www.farmatodo.com.ve/buscar?product={producto}&departamento=Todos&filtros="
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_stealth())
@@ -154,29 +170,46 @@ def scrap_farmatodo(producto):
         time.sleep(8)
         soup = BeautifulSoup(driver.page_source, "html.parser")
     except Exception as e:
-        driver.save_screenshot(f"farmatodo_{producto}.png")
+        driver.save_screenshot(f"Farmatodo_{producto}.png")
         raise e
     finally:
         driver.quit()
 
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     filas = []
+
     for card in soup.find_all("div", class_=lambda x: x and "card-ftd" in x.split()):
         marca = card.find("p", class_="text-brand")
         nombre = card.find("p", class_="text-title")
-        precio = card.find("span", class_="price__text-price")
         if not nombre:
             continue
-        filas.append({"Fecha_Hora": fecha, "Origen": "farmatodo",
-                      "Producto_Buscado": producto,
-                      "Marca": marca.get_text(strip=True) if marca else None,
-                      "Nombre": nombre.get_text(strip=True),
-                      "Precio": limpiar_precio(precio.get_text(strip=True) if precio else None)})
-    seen = set(); unicos = []
+
+        # ✅ Detectar si está no disponible
+        no_disponible = card.select_one("div.offer-description.not-available")
+        if no_disponible:
+            precio_limpio = None
+        else:
+            precio = card.find("span", class_="price__text-price")
+            precio_limpio = limpiar_precio(precio.get_text(strip=True) if precio else None)
+
+        filas.append({
+            "Fecha_Hora": fecha,
+            "Origen": "Farmatodo",
+            "Producto_Buscado": producto,
+            "Marca": marca.get_text(strip=True) if marca else None,
+            "Nombre": nombre.get_text(strip=True),
+            "Precio": precio_limpio
+        })
+
+    # Eliminar duplicados por (Nombre, Marca)
+    seen = set()
+    unicos = []
     for item in filas:
         clave = (item['Nombre'], item['Marca'])
         if clave not in seen:
-            seen.add(clave); unicos.append(item)
+            seen.add(clave)
+            unicos.append(item)
+
     return unicos
 
 #############################################################################################
@@ -193,7 +226,7 @@ def scrap_farmago(producto):
         time.sleep(3)
         soup = BeautifulSoup(driver.page_source, "html.parser")
     except Exception as e:
-        driver.save_screenshot(f"farmago_{producto}.png")
+        driver.save_screenshot(f"FarmaGo_{producto}.png")
         raise e
     finally:
         driver.quit()
@@ -219,7 +252,7 @@ def scrap_farmago(producto):
 
         filas.append({
             "Fecha_Hora": fecha,
-            "Origen": "farmago",
+            "Origen": "FarmaGo",
             "Producto_Buscado": producto,
             "Marca": marca,
             "Nombre": texto,
@@ -232,6 +265,30 @@ def scrap_farmago(producto):
         if clave not in seen:
             seen.add(clave); unicos.append(item)
     return unicos
+
+def corregir_marcas_especificas(df):
+    """
+    Corrige marcas específicas basándose en patrones conocidos
+    """
+    correcciones = {
+        # Patrón: (origen, nombre contiene, marca actual) -> nueva marca
+        ("FarmaGo", "biosa", "ALESS"): "BIOSANO",
+        # Agrega más correcciones aquí según sea necesario
+    }
+    
+    for idx, row in df.iterrows():
+        nombre = row['Nombre'].lower()
+        origen = row['Origen'].lower()
+        marca_actual = row['Marca']
+        
+        for (patron_origen, patron_nombre, patron_marca), nueva_marca in correcciones.items():
+            if (patron_origen in origen and 
+                patron_nombre in nombre and 
+                marca_actual == patron_marca):
+                df.at[idx, 'Marca'] = nueva_marca
+                print(f"Corregida marca: {marca_actual} -> {nueva_marca} para {nombre}")
+    
+    return df
 
 # ---------------  FUNCIÓN PARA COMPLETAR MARCAS FALTANTES  ---------------
 def completar_marcas_faltantes(productos):
@@ -317,6 +374,35 @@ def extraer_precio_farmasas(card):
             return f"Bs. {entero.get_text(strip=True).replace('Bs.', '').strip()}"
     except Exception as e:
         print(f"Error extrayendo precio: {e}")
+
+        # 1) Buscar el contenedor que tenga “Ahora”
+        ahora = card.find(string=re.compile(r'\bAhora\b'))
+        if ahora:
+            # Subir al contenedor-precio que lo incluye
+            contenedor = ahora.find_parent('div', class_='contenedor-precio')
+            if contenedor:
+                # Obtener todos los spans internos
+                partes = [
+                    span.get_text(strip=True)
+                    for span in contenedor.select('span.precio, span.fraccion, span.mat-small')
+                ]
+                # Unir y limpiar
+                texto = ''.join(partes)                      # ej: "Bs.442,24"
+                match = re.search(r'Bs\.?\s*(\d+[.,]?\d*)', texto)
+                if match:
+                    precio = match.group(1).replace('.', '').replace(',', '.')
+                    return f"Bs. {float(precio):.2f}"
+
+        # 2) Fallback: método antiguo si no hay “Ahora”
+        texto_completo = card.get_text()
+        match = re.search(r'Bs\.\s*(\d+\.?\d*,?\d*)', texto_completo)
+        if match:
+            precio = match.group(1).replace('.', '').replace(',', '.')
+            return f"Bs. {float(precio):.2f}"
+
+    except Exception as e:
+        print(f"Error extrayendo precio: {e}")
+
     return None
 
 # ---------------  NUEVA FUNCIÓN PARA EXTRAER FABRICANTE  ---------------
@@ -500,6 +586,10 @@ def main():
     productos_list = df_nuevo.to_dict('records')
     productos_completados = completar_marcas_faltantes(productos_list)
     df_nuevo = pd.DataFrame(productos_completados)
+    
+    # 🔧 CORREGIR MARCAS ESPECÍFICAS
+    print("🔧 Corrigiendo marcas específicas...")
+    df_nuevo = corregir_marcas_especificas(df_nuevo)
 
     if os.path.isfile(RUTA_EXCEL):
         print("📂 Leyendo Excel existente...")
@@ -512,7 +602,6 @@ def main():
     print("💾 Guardando Excel...")
     df_final.to_excel(RUTA_EXCEL, index=False)
     print(f"✅ {len(df_nuevo)} registros agregados → {RUTA_EXCEL}")
-
 
 # ---------------  EJECUCIÓN  ---------------
 if __name__ == "__main__":
