@@ -12,7 +12,7 @@ import time, os, traceback
 from datetime import datetime
 
 # Configuración específica para Farmago
-RUTA_EXCEL = r"C:\Users\sisa4\Desktop\consolidado_farmago.xlsx"
+RUTA_EXCEL = os.path.join(os.getcwd(), "consolidado_farmago.xlsx")
 HEADLESS = True
 PRODUCTOS = ["Diclofenac", "Paracetamol", "Ibuprofeno", "Loratadina"]
 PROXY = None
@@ -96,25 +96,65 @@ def scrap_farmago(producto):
     
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     filas = []
+    
+    # Diccionario de mapeo de términos a marcas (CASOS ESPECÍFICOS)
+    marca_por_termino = {
+        "biosa": "BIOSANO",
+        "biosano": "BIOSANO",
+        "butan": "Meyer",
+        "meyer": "Meyer",
+        "brolat": "MEYER",  # Para productos relacionados
+        "ibutan": "Meyer",  # Variación común
+        "brolat": "MEYER"   # Para productos relacionados
+    }
+    
     for card in soup.select("a.dropdown-item"):
         nombre_raw = card.select_one("div.h6.fw-bold.mb-0")
         precio_span = card.select_one("span.oe_currency_value")
         if not nombre_raw:
             continue
         texto = nombre_raw.get_text(strip=True)
+        
         # --- extraer marca y limpiar nombre ---
         marca = None
-        if texto.endswith(")"):
-            idx = texto.rfind("(")
+        texto_limpio = texto.strip()
+        
+        # 1. Primero intentar extraer marca de paréntesis (tu lógica actual)
+        if texto_limpio.endswith(")"):
+            idx = texto_limpio.rfind("(")
             if idx != -1:
-                marca = texto[idx+1:-1].strip()
-                texto = texto[:idx].strip()
+                marca = texto_limpio[idx+1:-1].strip()
+                texto_limpio = texto_limpio[:idx].strip()
+        
+        # 2. Si no hay marca, buscar por términos clave en el nombre
+        if not marca:
+            texto_lower = texto_limpio.lower()
+            
+            # Caso especial para BIOSA/BIOSANO
+            if "biosa" in texto_lower and "biosano" not in texto_lower:
+                marca = "BIOSANO"
+            
+            # Caso especial para IBUTAN
+            elif "butan" in texto_lower and "meyer" not in texto_lower:
+                marca = "Meyer"
+            
+            # Búsqueda general usando el diccionario
+            else:
+                for termino, marca_asignar in marca_por_termino.items():
+                    if termino in texto_lower:
+                        marca = marca_asignar
+                        break  # Encontramos una marca, no seguimos buscando
+        
+        # 3. CORRECCIÓN ADICIONAL: Normalizar la marca "Meyer" para que sea consistente
+        if marca and "meyer" in marca.lower():
+            marca = "Meyer"  # Estándar que usas en tus datos
+        
         filas.append({
             "Fecha_Hora": fecha,
-            "Origen": "farmago",
+            "Origen": "FarmaGo",
             "Producto_Buscado": producto,
             "Marca": marca,
-            "Nombre": texto,
+            "Nombre": texto_limpio,
             "Precio": limpiar_precio(f"Bs. {precio_span.text}" if precio_span else None)
         })
     

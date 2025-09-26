@@ -12,7 +12,7 @@ import time, os, traceback
 from datetime import datetime
 
 # Configuración específica para Farmatodo
-RUTA_EXCEL = r"C:\Users\sisa4\Desktop\consolidado_farmatodo.xlsx"
+RUTA_EXCEL = os.path.join(os.getcwd(), "consolidado_farmatodo.xlsx")
 HEADLESS = True
 PRODUCTOS = ["Diclofenac", "Paracetamol", "Ibuprofeno", "Loratadina"]
 PROXY = None
@@ -83,14 +83,107 @@ def scrap_farmatodo(producto):
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_stealth())
     try:
         driver.get(url)
-        time.sleep(8)
+        print(f"⏳ Cargando página para {producto}...")
+        
+        # Esperar a que se cargue el contenedor de productos
+        WebDriverWait(driver, 15).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div.cont-group-view"))
+        )
+        
+        # Variable para controlar si hay más productos para cargar
+        intentos_maximos = 10
+        intentos = 0
+        productos_anteriores = 0
+        boton_cargando = False
+        
+        while intentos < intentos_maximos:
+            try:
+                # Obtener el número actual de productos
+                productos_actuales = len(driver.find_elements(By.CSS_SELECTOR, "div.card-ftd"))
+                print(f"📦 Productos encontrados: {productos_actuales}")
+                
+                # Si no hay productos, salir
+                if productos_actuales == 0:
+                    print("⚠️ No se encontraron productos en la página")
+                    break
+                
+                # Si no hay cambio en el número de productos, esperar un poco más
+                # por si está en medio de una carga
+                if productos_actuales == productos_anteriores and not boton_cargando:
+                    if intentos > 2:  # Dar un par de intentos antes de rendirse
+                        print("🔍 No se están cargando más productos, finalizando...")
+                        break
+                    time.sleep(2)
+                    intentos += 1
+                    continue
+                
+                productos_anteriores = productos_actuales
+                
+                try:
+                    # Intentar encontrar el botón "Cargar más"
+                    load_more_button = WebDriverWait(driver, 5).until(
+                        EC.presence_of_element_located((By.ID, "group-view-load-more"))
+                    )
+                    
+                    # Verificar si el botón está visible
+                    if load_more_button.is_displayed():
+                        # Verificar si el botón está habilitado
+                        if not load_more_button.get_attribute("disabled"):
+                            print("🔄 Botón 'Cargar más' encontrado y habilitado")
+                            boton_cargando = True
+                            
+                            # Desplazarse hasta el botón
+                            driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", load_more_button)
+                            time.sleep(1)
+                            
+                            # Hacer clic en el botón usando JavaScript
+                            driver.execute_script("arguments[0].click();", load_more_button)
+                            print(f"✅ Clic #{intentos + 1} en 'Cargar más'")
+                            intentos += 1
+                            
+                            # Esperar a que carguen los nuevos productos
+                            time.sleep(3)
+                        else:
+                            print("ℹ️ Botón 'Cargar más' encontrado pero está deshabilitado")
+                            boton_cargando = False
+                            # Dar un momento adicional para ver si hay carga automática
+                            time.sleep(2)
+                            continue
+                    else:
+                        print("ℹ️ Botón 'Cargar más' no visible")
+                        boton_cargando = False
+                except Exception as e:
+                    print(f"🔍 No se encontró el botón 'Cargar más' (posiblemente ya no hay más productos): {str(e)}")
+                    boton_cargando = False
+                    # Esperar un momento para ver si hay carga automática
+                    time.sleep(2)
+                
+                # Verificar si hay nuevos productos
+                nuevos_productos = len(driver.find_elements(By.CSS_SELECTOR, "div.card-ftd"))
+                if nuevos_productos > productos_actuales:
+                    print(f"✨ Se cargaron {nuevos_productos - productos_actuales} nuevos productos")
+                    productos_anteriores = nuevos_productos
+                elif intentos > 0 and nuevos_productos == productos_actuales:
+                    print("🔍 No se cargaron nuevos productos después del clic")
+                    intentos += 1
+            
+            except Exception as e:
+                print(f"⚠️ Error durante el proceso de carga: {str(e)}")
+                break
+        
+        # Esperar un momento adicional para que se carguen los últimos productos
+        time.sleep(3)
+        
+        # Obtener el HTML después de cargar todos los productos
         soup = BeautifulSoup(driver.page_source, "html.parser")
+        print(f"✅ HTML obtenido con {len(soup.find_all('div', class_='card-ftd'))} tarjetas de producto")
     except Exception as e:
-        driver.save_screenshot(f"farmatodo_{producto}.png")
+        driver.save_screenshot(f"farmatodo_{producto}_error.png")
         raise e
     finally:
         driver.quit()
     
+    # Procesar los productos
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     filas = []
     for card in soup.find_all("div", class_=lambda x: x and "card-ftd" in x.split()):
@@ -108,17 +201,22 @@ def scrap_farmatodo(producto):
             "Precio": limpiar_precio(precio.get_text(strip=True) if precio else None)
         })
     
-    # Eliminar duplicados
-    seen = set()
+    # Eliminar duplicados (mejorada para manejar casos específicos)
+    seen = {}
     unicos = []
     for item in filas:
-        clave = (item['Nombre'], item['Marca'])
-        if clave not in seen:
-            seen.add(clave)
+        # Crear una clave única más flexible
+        clave_nombre = item['Nombre'].lower().replace(" ", "").replace("-", "").replace(",", "")
+        clave_marca = item['Marca'].lower().replace(" ", "").replace("-", "").replace(",", "") if item['Marca'] else "sinmarca"
+        clave = f"{clave_nombre}_{clave_marca}"
+        
+        # Si es la primera vez que vemos esta clave o si el precio es diferente, lo agregamos
+        if clave not in seen or seen[clave] != item['Precio']:
+            seen[clave] = item['Precio']
             unicos.append(item)
     
+    print(f"🔍 Encontrados {len(unicos)} productos únicos después de cargar todos los resultados")
     return unicos
-
 # ---------------  FUNCIÓN PRINCIPAL  ---------------
 def main():
     """Ejecuta el scraping para todos los productos definidos"""
